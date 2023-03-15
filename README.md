@@ -1,3 +1,15 @@
+<div align="center">
+  <h1>50 More Javascript Concepts</h1>
+  
+  <p><b>JavaScript</b> is a lightweight, Just-in-time compiled, Synchronous Single threaded, Loosly typed programming language.</p>
+  
+  <img src="https://miro.medium.com/max/3200/1*i8-u-V8LTTbQwTeUwLI_BQ.gif" alt="JS-banner">
+</div>
+
+<br>
+
+# Let's go :)
+
 51. [Event loop]()
 52. [Web APIs]()
 53. [Callback Queue]()
