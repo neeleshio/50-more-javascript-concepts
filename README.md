@@ -246,3 +246,113 @@ pending: initial state, neither fulfilled nor rejected.
 fulfilled: meaning that the operation was completed successfully.
 rejected: meaning that the operation failed.
 
+```javascript
+const createOrder = () => {
+    setTimeout(() => {
+        console.log('ID123')
+    }, 4000)
+}
+
+createOrder(() => {
+    console.log('placed') ---> callback function
+})
+
+// placed (after 4sec)
+```
+
+```javascript
+const promise = new Promise((resolve, reject) {
+  if(true) {
+     resolve('success')
+  } else {
+     reject(new Error('failed'))
+  }
+})
+
+promise.then(res => res)
+       .catch(e => console.error(e))
+```
+
+## 67. Async/await
+Just a most delegent way to handle promises.
+
+The async and await keywords enable asynchronous, promise-based behavior to be written in a cleaner style, avoiding the need to explicitly configure `promise chains`.
+
+```javascript
+async function init() {
+  await createPost() { console.log('created') }
+  getPosts();
+}
+```
+So here we are waiting for createPost to resolve before calling getPosts.
+
+fetch:
+```javascript
+const res = await fetch(url);
+const data = await res.json();
+console.log(data)
+```
+
+## 68. Callback hell
+The phenomenon which happens when we nest multiple callbacks within a function.
+
+Callback hell generally refers to an ineffective way of writing code asynchronously. It is an anti-pattern that is often called the “pyramid of doom”.
+
+```javascript
+getArticles(20, (user) => {
+  console.log("Fetch articles", user);
+  getUserData(user.username, (name) => {
+    console.log(name);
+    getAddress(name, (item) => {
+      console.log(item);
+      // this goes on and on...
+    }
+})
+```
+
+## 69. Imports & dynamic imports
+#### Static import:
+1. Import entire module's content:
+```javascript
+import * as myModule from '../../';
+```
+
+2. Import single export:
+```javascript
+import { singleExport } from '../../';
+```
+
+3. Run the global scope of the module:
+```javascript
+import '/module/../...';
+```
+
+### Dynamic imports:
+1. we can’t import conditionally or at run-time:
+```javascript
+if(...) {
+  import ...; // Error, not allowed!
+}
+
+{
+  import ...; // Error, we can't put import in any block
+}
+```
+
+2. We can use async await to import.
+```javascript
+(async() => {
+  if(something is true) {
+    await import (modulePath)
+  }
+})()
+```
+
+## 70. Polyfills
+A polyfill is a piece of code that implements the features that you expect the browser to support natively.
+
+A polyfill is a piece of code (usually JavaScript on the Web) used to provide modern functionality on older browsers that do not natively support it.
+
+In polyfilling, one write code to get a similar functionality as provided in other JS version.
+
+## 71. Currying
