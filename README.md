@@ -32,8 +32,8 @@
 71. [Polyfills]()
 72. [Currying]()
 73. [Coercion]()
-74. [Event Bubbling & Event Capturing (trikkling)]()
-75. [Event delegation]()
+74. [Event delegation]()
+75. [Event Bubbling & Event Capturing (trikkling)]()
 76. [Debouncing & Throtling]()
 77. [Objects]()
 78. [Rest & spread operators]()
@@ -112,10 +112,18 @@ console.log('end')
 When CBs inside microtask queue creates another microtask & if this goes on creating more microtasks then the task waiting in the callback queue doen't get a chance to get executed, this is Starvation of callbacks.
 
 ## 56. JavaScript Runtime Environment
+The runtime environment is what makes JavaScript code work, and in a browser it consists of the JS engine, a lot of Web APIs, a callback queue and the event loop.
 
+The runtime environment in a browser is very different from that of Node.js. These differences are primarily at the implementation level, so most of the above concepts are still relevant like console, setTimeout etc. & localStorage, window object could be different.
 
 ## 57. JS Engine
+A JS engine is a part of JS Runtime env which is a software component that executes JavaScript code.
 
+The purpose of the JavaScript engine is to translate `source code` that developers write into machine code that allows a computer to perform specific tasks.
+
+The first JavaScript engines were mere `interpreters`, but all relevant modern engines use `just-in-time` compilation for improved performance. JavaScript engines are typically developed by web browser vendors, and every major browser has one.
+
+`Spidermonkey` was the first JS engine.
 
 ## 58. Just-in-time compilation
 
@@ -356,3 +364,141 @@ A polyfill is a piece of code (usually JavaScript on the Web) used to provide mo
 In polyfilling, one write code to get a similar functionality as provided in other JS version.
 
 ## 71. Currying
+Currying is an advanced technique of working with functions. It’s used not only in JavaScript, but in other languages as well.
+
+It transforms a function with multiple arguments into a nested series of functions, each taking a single argument.  or,\
+Currying is when you break down a function that takes `multiple arguments` into a series of functions that takes only one argument.
+
+#### Uses:
+1. Currying helps you avoid passing the same variable again and again.
+2. It helps you create a higher order function.
+
+We can curry our function in 2 ways:
+1. Use binding function.
+2. Using concept of clousers.
+
+```javascript
+let multiply = function(x, y) {
+   return x * y;
+}
+
+let multiplyByTwo = multiply.bind(this, 2);
+multiplyByTwo(5) // 10
+
+let multiplyByThree = multiply.bind(this, 3);
+multiplyByTwo(10) // 30
+```
+
+Using clousers:
+```javascript
+let multiply = function(x) {
+  return function(y) {
+    console.log(x * y)
+  }
+}
+
+let multiplyByTwo = multiply(2)
+multiplyByTwo(5) // 10
+```
+
+## 72. Coercion
+Type coersion referes to the process of automatic or implicit conversion of values from one data type ro another.
+
+Includes conversions from Number to String, String to Number, Boolean to Number etc. when different types of operators are applied.
+
+1. When we use addition operator (+):
+```javascript
+const a = '5'
+const b = 5
+
+a + b => '5' + 5  =>  '55' (string) 
+```
+So when a string or non-string value is added to a string, it always converts non-string value to string implicitly (automatic).
+
+2. Operators like [ - , * , / , % ]:
+```javascript
+'5' - 5 // 0
+5 * '5' // 25
+true / 2 // 0.5 => true coerced to 1
+'true' * '5' // NaN
+true / '2' // 0.5 => true becomes 1 & '2' becomes number.
+
+3. Equality operator.
+Used to compare the values irrespective of their type.
+
+So this is done by Coercing. This is done by coercing a non-number data type to a Number.
+```javascript
+'10' == 10 // true
+true == 1 // true
+true == 'true' // false ==> string 'true' becomes NaN.
+```
+
+## 73. Event delegation
+Event delegation is basically a `design pattern` to handle events effectively.
+
+The idea is that if we have a lot of elements handled in a similar way, then instead of assigning a handler to each of them – we put a single handler on their common ancestor.
+
+In the handler we get event.target to see where the event actually happened and handle it.
+
+
+## 73. Event Bubbling and Event Capturing (trikkling)
+`Bubbling` is a type of propogation where the event first triggers on the innermost target element & then successively triggers on the ancestors of the target element in the same nesting hiererchy till it reaches the outermost DOM element or document object.
+
+```javascript
+elem.addEventListener("click", e => alert(`Bubbling: ${elem.tagName}`));
+```
+
+```javascript
+to stop bubbling, use event.stopPropogation()
+```
+
+`Event capturing` starts from the top element to the target element.
+
+We need to pass true to enable the capturing.
+```javascript
+ elem.addEventListener("click", e => fn(), true);
+```
+
+## 74. Debouncing and Throtling
+As developers, we follow various techniques to enhance application performance and provide a better user experience. For example, debouncing and throttling are two simple, yet powerful techniques we can use in JavaScript applications to improve performance.
+
+`Debouncing and throttling` are two techniques that limit when and how often a function is called or simply, limiting the function calls.
+
+In `debouncing`, we call the attached function when there is a certain time difference b/w 2 events like keystrokes, mouseclicks etc.
+
+<img src="https://raw.githubusercontent.com/neeleshio/stock-images/master/Group%202.png"/>
+
+```javascript
+function debounce(callback, delay = 1000) {
+  let time;
+
+  return (...args) => {
+    clearTimeout(time);
+    time = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  };
+}
+```
+
+In `throttling`, no matter how many times the user fires the event, the attached function will be executed only once in a given time interval.
+
+<img src="https://github.com/neeleshio/stock-images/blob/master/Group%204.png"/>
+
+```javascript
+function throttle(callback, delay = 1000) {
+  let shouldWait = false;
+
+  return (...args) => {
+    if (shouldWait) return;
+
+    callback(...args);
+    shouldWait = true;
+    setTimeout(() => {
+      shouldWait = false;
+    }, delay);
+  };
+}
+```
+
+## 75. Rest and Spread operators
