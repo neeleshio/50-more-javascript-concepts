@@ -441,7 +441,7 @@ The idea is that if we have a lot of elements handled in a similar way, then ins
 In the handler we get event.target to see where the event actually happened and handle it.
 
 
-## 73. Event Bubbling and Event Capturing (trikkling)
+## 74. Event Bubbling and Event Capturing (trikkling)
 `Bubbling` is a type of propogation where the event first triggers on the innermost target element & then successively triggers on the ancestors of the target element in the same nesting hiererchy till it reaches the outermost DOM element or document object.
 
 ```javascript
@@ -459,7 +459,7 @@ We need to pass true to enable the capturing.
  elem.addEventListener("click", e => fn(), true);
 ```
 
-## 74. Debouncing and Throtling
+## 75. Debouncing and Throtling
 As developers, we follow various techniques to enhance application performance and provide a better user experience. For example, debouncing and throttling are two simple, yet powerful techniques we can use in JavaScript applications to improve performance.
 
 `Debouncing and throttling` are two techniques that limit when and how often a function is called or simply, limiting the function calls.
@@ -501,4 +501,134 @@ function throttle(callback, delay = 1000) {
 }
 ```
 
-## 75. Rest and Spread operators
+## 76. Objects
+All javascript values except primitives are Objects.
+
+
+## 77. Rest and Spread operators
+`Spread` operator takes in an iterable or an array & expands/spreads it into indivisual elements.
+
+```javascript
+const arr = [1, 2, 3, 4]
+
+console.log(...arr) // 1 2 3 4
+```
+The spread operator is commonly used to make shallow copies of JS object (Objects & Arrays).
+
+`Rest` operator allows us to call a function with any number of arguments & then access those excess arguments as an array. or,\
+
+When the spread operator is used as a parameter, it is known as the rest parameter. This allows a funtion to accept an indefinite number of arguments as an array.
+
+```javascript
+function calculate(...args){
+    let sum = 0;
+    for(let i of input){
+        sum+=i;
+    }
+    return sum;
+}
+
+calculate(1,2,3,4,5); //15  
+```
+
+## 78. Destructuring
+Destructuring Assignment is a JavaScript expression that allows to unpack values from arrays, or properties from objects, into distinct variables. Destructuring makes it easy to extract only what is needed.
+
+```javascript
+// objects
+const user = {
+  name: "John",
+  age: 30
+};
+
+const { name, age } = user
+name // 'John'
+```
+
+```javascript
+// array
+const colors = ['#ffffff', '#000000', 'e0e0e0'];
+
+const [white, black, grey] = colors
+white // '#ffffff'
+```
+
+## 79. Shallow copy and Deep copy
+`Shallow copy` doesn't creates a new copy but it just oints to the address of the original JS object, meaning its just the reference.
+
+```javascript
+const employee = {
+  id: '1234',
+  name: 'Jack'
+}
+
+const employeeCopy = employee // shallow copy
+
+employeeCopy.id = '9999'
+
+console.log(employee) // { id: '9999', name: 'Jack' }
+```
+
+`Deep copy` creates a new copy of the JS object, meaning it creates/allocates the memory to the copy. So both the objects are independent to each other.
+
+#### Methods for deep copy:
+1. Use spread operator:
+
+```javascript
+const person = {
+  name: 'Neelesh',
+  age: 25
+}
+
+let copiedPerson = { ...person } // deep copy
+```
+
+2. Object.assign:
+
+```javascript
+const person = {
+  name: 'Neelesh',
+  age: 25
+}
+
+let copiedPerson = Object.assign({}, person)
+```
+
+But if we have a nested object them assign & spread acts same as shallow copy, so use below JSON method for nested objects.
+
+```javascript
+const person = {
+  name: 'Neelesh',
+  age: 25,
+  place: {
+    city: 'CKM',
+    state: 'KA',
+    country: 'IN'
+  }
+}
+
+let deepClone = JSON.parse(JSON.stringify(person))
+```
+
+## 80. Array methods and their Big(O)
+1. **Push & Pop** (end): Adding & Removing elements at the `end` of the array.
+BigO: O(1) 
+
+2. **Shift & Unshift** (start): Adding & Removing elements at the `start` of the array. It has to reindex the array.
+BigO: O(n)
+
+3. **Splice**: method to Adds and/or Removes array elements.
+`Splice` overwrites/mutates the original array.
+
+Add: array.splice(index, howmany, item1)
+Remove: array.splice(index, howmany)
+
+```javascript
+const fruits = ['apple', 'orange', 'jackfruit']
+
+fruits.splice(2, 1, )
+```
+
+4. **Slice**: method to remove array elements.
+`Slice` doesn't mutates the original array, it creates a new array.
+
