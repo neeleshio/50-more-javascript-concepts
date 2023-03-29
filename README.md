@@ -611,24 +611,277 @@ let deepClone = JSON.parse(JSON.stringify(person))
 ```
 
 ## 80. Array methods and their Big(O)
-1. **Push & Pop** (end): Adding & Removing elements at the `end` of the array.
+1. **Push & Pop** (end): Adding & Removing elements at the `end` of the array.\
 BigO: O(1) 
 
-2. **Shift & Unshift** (start): Adding & Removing elements at the `start` of the array. It has to reindex the array.
+2. **Shift & Unshift** (start): Adding & Removing elements at the `start` of the array. It has to reindex the array.\
 BigO: O(n)
 
-3. **Splice**: method to Adds and/or Removes array elements.
+3. **Splice**: method to add, remove or replace array elements.\
+BigO: O(1) \
 `Splice` overwrites/mutates the original array.
 
-Add: array.splice(index, howmany, item1)
-Remove: array.splice(index, howmany)
-
 ```javascript
+<--- Add --->
 const fruits = ['apple', 'orange', 'jackfruit']
+//arr.splice(positionIndex, 0, 'element') ===> 0 is to add elements
+fruits.splice(0, 0, 'onion') // ['onion', 'apple', 'orange', 'jackfruit']
 
-fruits.splice(2, 1, )
+<--- Remove --->
+const fruits = ['apple', 'orange', 'jackfruit']
+//arr.splice(fromIndex, noOfItems)
+fruits.splice(0, 1) // ['orange', 'jackfruit']
+
+<--- Replace --->
+const fruits = ['apple', 'orange', 'jackfruit']
+//arr.splice(positionIndex, noOfItemsToDlt, 'element') ===> number of elements to delete needs not to be the same as the number of elements to insert.
+fruits.splice(0, 0, 'onion') // ['onion', 'apple', 'orange', 'jackfruit']
 ```
 
-4. **Slice**: method to remove array elements.
+4. **Slice**: method to remove array elements.\
+BigO: O(1) \
 `Slice` doesn't mutates the original array, it creates a new array.
+
+5. **indexOf**: \
+BigO: O(n) \
+returns the position of the first occurence of a specified value in an array or string.
+
+```javascript
+const arr = ['one', 'two', 'three']
+arr.indexOf('three') // 2
+arr.indexOf('four') // -1
+```
+
+## 81. for in vs for of loops
+`for..of` iterates over all enumerable property **keys** of an object.
+
+```javascript
+const arr = [5, 6, 7, 8]
+
+for(const key of arr) {
+  console.log(key) // 0, 1, 2, 3
+}
+```
+
+`for..in` can iterates over both **key** & **value** of an iterable object.
+```javascript
+const arr = [5, 6, 7, 8]
+
+for(const value in arr) {
+  console.log(value) // 5, 6, 7, 8
+}
+
+const obj = {
+  name: 'Neel',
+  age: 25,
+  city: 'CKM'
+}
+
+for(const value in obj) {
+  console.log(value) // 'name', 'age', 'city'
+  console.log(obj[value]) // 'Neel', 25, 'CKM'
+}
+```
+
+## 82. map() vs forEach()
+#### forEach():
+1. Used to loop through the elements of an array.
+2. Returns “undefined“.
+3. forEach is faster than map and filter.
+4. forEach() throws away return values and always returns undefined.
+5. forEach() will allow a callback function to mutate the current array.
+6. forEach() may be preferable when you’re not trying to change the data in your array, but instead want to just do something with it — like saving it to a database or logging it out:
+7. Not recommended inside JSX becoz it doesn't return anything.
+
+```javascript
+const arr = [1, 2, 3, 4, 5]
+arr.forEach(x => x * x) // undefined
+```
+
+#### map():
+1. Used to transform the elements of an array.
+2. Returns an entirely new array.
+3. Slower than forEach.
+4. map() allocates memory and stores return values.
+5. map() will instead return a new array.
+6. map() might be preferable when changing or altering data. Not only is it faster but it returns a new Array. This means we can do cool things like chaining on other methods ( map(), filter(), reduce(), etc.).
+7. Recommended inside JSX.
+
+```javascript
+const arr = [1, 2, 3, 4, 5]
+arr.map(x => x * x) // [1, 4, 9, 16, 25]
+```
+
+## 83. map() vs filter() vs reduce()
+
+## 84. Alphabetical sort vs Numeric sort
+The sort() sorts the elements of an array. The sort() overwrites the original array.
+
+The sort() sorts the elements as `strings` in alphabetical and ascending order.
+
+```javascript
+const numArr = [5, 2, 41, 87, 10, 13, 61]
+numArr.sort() // [10, 11, 13, 14, 17,  2,  5]
+
+const stringArr = ['cat', 'plane', 'swim', 'ant']
+stringArr.sort() // ['ant', 'cat', 'plane', 'swim']
+```
+
+To sort numerically:
+```javascript
+const points = [40, 100, 1, 5, 25, 10];
+
+points.sort((a, b) => {
+  return a - b           --> ascending order
+});
+// [1, 5, 10, 25, 40, 100]
+
+points.sort((a, b) => {
+  return b - a           --> decending order
+});
+// [100, 40, 25, 10, 5, 1]
+```
+
+## 85. Map vs Objects vs Sets
+
+## 86. WeakMap vs WeakSets
+
+## 87. Memoization
+Memoization is a technique for speeding up applications by caching the results of expensive function calls and returning them when the same inputs are used again.
+
+**Memoized function should be a pure function.**
+We don't have to memoize the HTTP calls as the browser itself will cache that.
+
+## 88. Object freeze vs seal vs preventExtension
+These methods used to make objects immutable.
+
+#### Object.seal():
+It prevents add/remove properties.
+
+```javascript
+const fruit = {
+  name: 'apple',
+  properties: {
+    color: 'red'
+  }
+}
+
+Object.seal(fruit)
+Object.isSealed(fruit)
+
+* Add/Remove:
+fruit.fresh = true // won't work
+delete fruit.name // won't work
+
+delete fruit.properties.color // works becoz nested prop
+fruit.properties.fresh = true // works becoz nested prop
+
+* Modify:
+fruit.name = 'orange' // works
+```
+
+#### Object.freeze():
+1. This also prevents add/remove properties.
+2. It also prevents modifying any existing props.
+
+```javascript
+const profile = {
+  name: 'Neelesh',
+  address: {
+    city: 'CKM'
+  }
+}
+
+Object.freeze(profile)
+Object.isFrozen(profile) // true
+
+* Modfify a props:
+profile.name = 'shetty' (won't work)
+
+profile.address.city = 'Banglore' // works becoz it's nested props.
+
+* Add/Remove:
+profile.age = 24 // won't work
+delete profile.name // won't work
+```
+
+#### Object.preventExtensions
+This only prevents adding new props.
+
+```javascript
+profile.age = 24 // won't work
+profile.name = 'something' // works
+delete profile.name // works
+```
+
+## 89. Numeric Seperator
+The numeric separator allows you to create a visual separation between groups of digits by using underscores (_) as separators.
+
+```javascript
+// without numeric seperator
+const budget = 1000000000;
+
+// with numeric seperator
+const budget = 1_000_000_000;
+
+let amount = 120_201_123.05; // 120201123.05
+let expense = 123_450; // 123450
+let fee = 12345_00; // 1234500
+
+const max = 9_223_372_036_854_775_807n; // BigInt
+```
+
+## 90. Fetch vs Axios
+
+|                   Axios                             |                        Fetch                            |
+|-----------------------------------------------------|---------------------------------------------------------|
+| 1. Axios is a stand-alone third party package that can be easily installed.  | 1. Fetch is built into most modern browsers; no installation is required.
+| 2. Axios enjoys built-in XSRF protection. | 2. Fetch does not.
+| 3. Axios performs automatic transforms of JSON data. | 3. We have to manually transform JSON data using response.json().
+| 4. Axios allows cancelling request and request timeout. | 4. Fetch does not.
+| 5. Axios has the ability to intercept HTTP requests. | 5. Fetch does not.
+| 6. Axios has wide browser support. | 6. Fetch has less support than axios.
+
+
+## 91. Browser storages
+#### 1. localStorage API:
+1. Unlike with cookies, we don't need to send the info on every HTTP request back & forth.
+2. The data is stored across sessions, never shared with the server.
+3. Storage is limited to ~5MB.
+4. Can save only UTF-16 strings, we must make sure to convert data to strings before saving it into localStorage.
+5. Data can only be destroyed by manually clearing the storage or with javascript code.
+6. We can encrypt data for more security.
+7. localStorage is synchronous, meaning each operation called would only execute one after the other.
+
+```javascript
+localStorage.setItem('key', 'value')
+localStorage.getItem('key')
+localStorage.removeItem('key')
+localStorage.clear() // clears all key values.
+```
+
+#### 2. sessionStorage API:
+Same as localStoarge, but the data will get deleted once we close the tab.
+
+#### 3. Cookies:
+1. They are small text files that are placed on users computer by a website.
+2. They hold a very small data at a max. capacity of 4kb.
+3. They can only store strings.
+4. They mostly store login info, page visits etc.
+5. It’s the only storage that is shared with the server.
+6. We have to keep our cookies small to maintain a decent request size.
+
+**Session cookies**: \
+1. Do not have expiry data, they are stored as long as browser tab is open.
+2. This type of cookies mostly common for banking website.
+
+**Persistent cookies**: \
+1. Have an expiry date.
+2. Stored in user's disk until the expiration date.
+
+#### 4. IndexedDB API:
+1. IndexedDB is a modern storage solution in the browser.
+2. It can store a significant amount of structured data — even files, and blobs.
+3. Like every database, IndexedDB indexes the data for running queries efficiently. 
+4. It’s more complex to use IndexedDB. We have to create a database, tables, and use transactions. So, localForge package is recomended.
 
