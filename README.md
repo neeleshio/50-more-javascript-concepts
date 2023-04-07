@@ -523,6 +523,53 @@ function throttle(callback, delay = 1000) {
 ## 76. Objects
 All javascript values except primitives are Objects.
 
+#### Creating objects:
+1. By object literal
+```javascript
+const person = { }  --> this creates a person object
+```
+
+2. With new keyword
+```javascript
+const person = new Object() 
+```
+
+3. Object.create()
+```javascript
+const person = Object.create(null) // object with no properties
+```
+
+4. Object constructor
+```javascript
+function person(id, name){  
+  this.id = id;  
+  this.name = name;
+}
+
+const person1 = new person(1, 'neelesh') // { id: 1, name: 'neelesh' }
+```
+
+#### Other object methods:
+
+1. Object.assign()
+The Object.assign() copies all enumerable and own properties from the source objects to the target object. It returns the target object.
+
+```javascript
+let widget = {
+    color: 'red'
+};
+
+let clonedWidget = Object.assign({}, widget) // { color: 'red' } --> new object
+```
+
+2. Object.entries()
+This method returns an array with arrays of the key, value pairs.
+
+3. Object.keys()
+This method returns an array of a given object's own property names.
+
+4. Object.values()
+This method returns an array of values.
 
 ## 77. Rest and Spread operators
 `Spread` operator takes in an iterable or an array & expands/spreads it into indivisual elements.
@@ -731,7 +778,45 @@ const arr = [1, 2, 3, 4, 5]
 arr.map(x => x * x) // [1, 4, 9, 16, 25]
 ```
 
-## 83. map() vs filter() vs reduce()
+## 83. filter() vs reduce()
+#### filter() 
+filter outs the unwanted elements.
+
+```javascript
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+function checkEven(number) {
+  if (number % 2 == 0) return true;
+  return false;
+}
+
+numbers.filter(checkEven) // [ 2, 4, 6, 8, 10 ]
+```
+
+#### reduce() 
+reduce() method is used to reduce the array to a single value.
+
+```javascript
+arr.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue;
+}, initialValue);
+```
+
+If we omit the initialvalue, then by default it will consider the first element of the array.
+
+```javascript
+let shoppingCart = [
+  { price: 500 },
+  { price: 10 },
+  { price: 20 },
+];
+
+shoppingCart.reduce((previousValue, currentValue) => {
+   return previousValue + currentValue['price']
+}, 0)
+
+// 530
+```
 
 ## 84. Alphabetical sort vs Numeric sort
 The sort() sorts the elements of an array. The sort() overwrites the original array.
@@ -763,7 +848,60 @@ points.sort((a, b) => {
 
 ## 85. Map vs Objects vs Sets
 
+| Object                         |    Map                        |             Set                |
+|--------------------------------|-------------------------------|--------------------------------|
+| 1. In Object, the data-type of the key-field is restricted to integer, strings, and symbols. | 1. In Map, the key-field can be of any data-type (integer, an array, even an object!) | 1. A Set is a special type collection – “set of values” (without keys), where each value may occur only once |
+| 2. In objects, order of elements are not always guaranteed. | 2. In the Map, the original order of elements is preserved. | 2. In Set, the original order of elements is preserved.|
+| 3. Object is not directly iterable, we must convert them to an array to iterate using keys(), entries(), values() or for..in loop | 3. Map is directly iterable using for..of loop or forEach | 3. Same as Map |
+| 4. Object has its own methods | 4. Map and Set both have similar methods; these include .has(), .get(), .delete(), and .size(). | 4. Map and Set both have similar methods; these include .has(), .get(), .delete(), and .size(). |
+
+```javascript
+// Object
+const obj = new Object()
+obj.name = 'neelesh'
+```
+```javascript
+// Map
+const map = new Map()
+map.set('name', 'neelesh')
+```
+```javascript
+// Set
+const set = new Set()
+set.add('neelesh')
+```
+
 ## 86. WeakMap vs WeakSets
+WeakMap is Map-like collection that allows only objects as keys and removes them together with associated value once they become inaccessible by other means.
+
+```javascript
+let weakMap = new WeakMap();
+
+let obj = {};
+
+weakMap.set(obj, "ok"); // works fine (object key)
+
+// can't use a string as the key
+weakMap.set("test", "Whoops"); // Error, because "test" is not an object
+```
+
+WeakSet is Set-like collection that stores only objects and removes them once they become inaccessible by other means.
+```javascript
+let visitedSet = new WeakSet();
+
+let john = { name: "John" };
+let pete = { name: "Pete" };
+let mary = { name: "Mary" };
+
+visitedSet.add(john); // John visited us
+visitedSet.add(pete); // Then Pete
+visitedSet.add(mary); // John again
+
+john = null;
+
+console.log(visitedSet.has(john)); // false
+// visitedSet will be cleaned automatically
+```
 
 ## 87. Memoization
 Memoization is a technique for speeding up applications by caching the results of expensive function calls and returning them when the same inputs are used again.
@@ -903,4 +1041,34 @@ Same as localStoarge, but the data will get deleted once we close the tab.
 2. It can store a significant amount of structured data — even files, and blobs.
 3. Like every database, IndexedDB indexes the data for running queries efficiently. 
 4. It’s more complex to use IndexedDB. We have to create a database, tables, and use transactions. So, localForge package is recomended.
+
+## 92. CacheStorage
+Provides a master directory of all the named caches that can be accessed by a ServiceWorker or other type of worker or window scope (you're not limited to only using it with service workers).
+
+The Cache Storage API opens up a whole new range of possibilities, by giving developers complete control over the contents of the cache.
+
+## 93. Iterators and Generators
+#### Iterators:
+The ‘for...of loop’ can create a loop over any iterable object (Arrays, Set, Maps, Strings).
+
+Plain objects are not iterable and hence the 'for...of' uses the Symbol.iterator.
+
+The Symbol.iterator is a special-purpose symbol made especially for accessing an object's internal iterator. So, you could use it to retrieve a function that iterates over an array object.
+
+```javascript
+const arr = [1, 2, 3, 4, 5]
+const iterators = arr[Symbol.iterator]()
+
+iterators.next() // {value: 1, done: false}
+iterators.next() // {value: 2, done: false}
+.
+.
+iterators.next() // {value: undefined, done: true}
+```
+
+1. An iterator is an object that can access one item at a time from a collection while keeping track of its current position.
+2. It just requires that you have a method called next() to move to the next item to be a valid iterator
+3. The result of next() is always an object with two properties – value & done.
+
+#### Generators:
 
