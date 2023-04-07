@@ -125,8 +125,27 @@ The first JavaScript engines were mere `interpreters`, but all relevant modern e
 
 `Spidermonkey` was the first JS engine.
 
-## 58. Just-in-time compilation
+## 58. Just-in-time compilation vs Compiler vs Interpreter
+All the three are programs that convert the Source Code (high-level language) into machine codes.
 
+#### Compilation / Compiler:
+1. Entire code is converted into machine code at once & written to a binary file that can be executed by browser or system.
+2. Faster execution.
+3. Debugging is slightly difficult.
+4. C, C++, C#, etc are programming languages that are compiler-based.
+
+#### Interpreter
+1. It runs through the source code & executes it line by line or one statement at a time.
+2. Slower execution.
+3. Highly useful in debugging.
+4. Python, Ruby, Perl, SNOBOL, MATLAB, etc are programming languages that are interpreter-based.
+
+#### 3. JIT compilation
+1. In JIT not all the code is converted into machine code first a part of the code that is necessary will be converted into machine code then if a method or functionality called is not in machine then that will be turned into machine code... it reduces burden on the CPU.
+2. As the machine code will be generated on run time....the JIT compiler will produce machine code that is optimised for running machine's CPU architecture.
+3. Because of the time it takes to load and compile bytecode, there is a startup delay in the initial execution of an application.
+
+![image](https://user-images.githubusercontent.com/56342160/230608066-057f7d0d-3d65-48fc-97da-e7527f51894a.png)
 
 ## 59. Concurrency model
 Concurrency means the fact of two or more events or circumstances happening or existing at the same time.
