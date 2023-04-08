@@ -1048,7 +1048,7 @@ Provides a master directory of all the named caches that can be accessed by a Se
 The Cache Storage API opens up a whole new range of possibilities, by giving developers complete control over the contents of the cache.
 
 ## 93. Iterators and Generators
-#### Iterators:
+### Iterators:
 The ‘for...of loop’ can create a loop over any iterable object (Arrays, Set, Maps, Strings).
 
 Plain objects are not iterable and hence the 'for...of' uses the Symbol.iterator.
@@ -1070,5 +1070,109 @@ iterators.next() // {value: undefined, done: true}
 2. It just requires that you have a method called next() to move to the next item to be a valid iterator
 3. The result of next() is always an object with two properties – value & done.
 
-#### Generators:
+### Generators:
+Generators are a special type of function in JavaScript that can pause and resume state. A Generator function returns an iterator, which can be used to stop the function in the middle, do something, and then resume it whenever. 
 
+Generator functions/yield and Async functions/await can both be used to write asynchronous code that 'waits'.
+
+#### Advantages of Generators:
+1. Lazy Evaluation: This is an evaluation model that delays the evaluation of an expression until its value is needed.
+2. Memory Efficient: A direct outcome of Lazy Evaluation is that generators are memory efficient.
+
+```javascript
+function* gen() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+const g = gen();
+
+g.next(); // { value: 1, done: false }
+g.next(); // { value: 2, done: false }
+g.return(); // { value: undefined, done: true } // return keyword will cause the loop to exit on the iteration.
+```
+
+#### Applications:
+Quite a few libraries use generators, such as Mobx-State-Tree or Redux-Saga etc.
+
+#### Unique ID generator:
+```javascript
+function* idGenerator() {
+  let i = 0;
+  while (true) {
+    yield i++;
+  }
+}
+
+const ids = idGenerator();
+
+console.log(ids.next().value); // 0
+console.log(ids.next().value); // 1
+console.log(ids.next().value); // 2
+.
+.
+console.log(ids.next().value); // n
+```
+
+## 94. XSS attack (cross site scripting)
+Cross-site Scripting (XSS) is a client-side code injection attack. The attacker aims to execute malicious scripts in a web browser of the victim by including malicious code in a legitimate web page or web application.
+
+#### Characteristics:
+1. Vulnerable vehicles that are commonly used for Cross-site Scripting attacks are forums, message boards, and web pages that allow comments.
+2. A web page or web application is vulnerable to XSS if it uses unsanitized user input in the output that it generates.
+3. Cross-site Scripting may also be used to deface a website instead of targeting the user. The attacker can use injected scripts to change the content of the website or even redirect the browser to another web page, for example, one that contains malicious code.
+4. Malicious JavaScript has access to all the objects that the rest of the web page has access to. This includes access to the user’s cookies. Cookies are often used to store session tokens. If an attacker can obtain a user’s session cookie, they can impersonate that user, perform actions on behalf of the user, and gain access to the user’s sensitive data.
+
+#### How to prevent
+1. To keep yourself safe from XSS, you must `sanitize` your input. Your application code should never output data received as input directly to the browser without checking it for malicious code.
+2. Use an appropriate `escaping/encoding technique` depending on where user input is to be used: HTML escape, JavaScript escape, CSS escape, URL escape, etc. Use existing libraries for escaping, don’t write your own unless absolutely necessary.
+3. Set the `HttpOnly flag` for cookies. If you do, such cookies will not be accessible via client-side JavaScript.
+4. Use a `Content Security Policy` (CSP). CSP is an HTTP response header that lets you declare the dynamic resources that are allowed to load depending on the request source.
+
+## 95. SQL Injection
+SQL injection is a code injection technique that might destroy your database. SQL injection is the placement of malicious code in SQL statements, via web page input.
+
+It generally allows an attacker to view data that they are not normally able to retrieve. This might include data belonging to other users, or any other data that the application itself is able to access.
+
+A successful SQL injection attack can result in unauthorized access to sensitive data, such as passwords, credit card details, or personal user information. In some cases, an attacker can obtain a persistent backdoor into an organization's systems, leading to a long-term compromise that can go unnoticed for an extended period.
+
+SQL also lets you alter data in a database and add new data. For example, in a financial application, an attacker could use SQL Injection to alter balances, void transactions, or transfer money to their account.
+
+#### How to prevent:
+1. The only sure way to prevent SQL Injection attacks is input validation and parametrized queries including prepared statements. 
+2. The application code should never use the input directly. The developer must sanitize all input, not only just web form inputs such as login forms. 
+3. They must remove potential malicious code elements such as single quotes. 
+4. It is also a good idea to turn off the visibility of database errors on your production sites. Database errors can be used with SQL Injection to gain information about your database.
+
+## 96. CSRF attack
+Cross-Site Request Forgery (CSRF) is an attack that forces authenticated users to submit a request to a Web application against which they are currently authenticated.
+
+A CSRF attack targets Web applications failing to differentiate between valid requests and forged requests controlled by attacker. There are many ways for an attacker to try and exploit the CSRF vulnerability.
+
+#### How to prevent:
+1. Use anti-CSRF tokens: Anti-CSRF tokens are considered the most effective method of protecting against CSRF.
+2. Use SameSite cookies: Set the SameSite attribute of your cookies to Strict. If this would break your web application functionality, set the SameSite attribute to Lax but never to None. Not all browsers support SameSite cookies yet, but most do. Use this attribute as additional protection along with anti-CSRF tokens.
+
+## 97. ClickJacking
+Clickjacking is an attack that fools users into thinking they are clicking on one thing when they are actually clicking on another.
+
+Clickjacking is an attack that tricks a user into clicking a webpage element which is invisible or disguised as another element. This can cause users to unwittingly download malware, visit malicious web pages, provide credentials or sensitive information, transfer money, or purchase products online.
+
+#### How to prevent:
+1. Preventing the browser from loading the page in frame using the X-Frame-Options or Content Security Policy (frame-ancestors) HTTP headers.
+2. Preventing session cookies from being included when the page is loaded in a frame using the SameSite cookie attribute.
+3. Implementing JavaScript code in the page to attempt to prevent it being loaded in a frame (known as a "frame-buster").
+4. The frame-ancestors directive can be used in a Content-Security-Policy HTTP response header to indicate whether or not a browser should be allowed to render a page in a <frame> or <iframe>. Sites can use this to avoid Clickjacking attacks by ensuring that their content is not embedded into other sites.
+
+Note that these mechanisms are all independent of each other, and where possible more than one of them should be implemented in order to provide defense in depth.
+
+
+## 98. CSP (Content Security Policy)
+Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks. 
+
+These attacks are used for everything from data theft, to site defacement, to malware distribution.
+
+To enable CSP, a response needs to include an HTTP response header called Content-Security-Policy with a value containing the policy. The policy itself consists of one or more directives, separated by semicolons.
+
+## 99. Service Workers
