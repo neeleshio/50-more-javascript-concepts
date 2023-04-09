@@ -1176,3 +1176,31 @@ These attacks are used for everything from data theft, to site defacement, to ma
 To enable CSP, a response needs to include an HTTP response header called Content-Security-Policy with a value containing the policy. The policy itself consists of one or more directives, separated by semicolons.
 
 ## 99. Service Workers
+A service worker is a script that runs independently in the browser background. On the user side, it can intercept its network requests and decide what to load (fetch).
+
+#### Characteristics:
+1. Service workers mainly serve features like background sync, push notifications and they are commonly used for ’offline first’ applications.
+2. The service worker lifecycle is completely separate from the web page. It’s a programmable network proxy, which is terminated when it’s not used and restarted when it’s next needed.
+3. Service workers require the use of HTTPS connection. Before deployment, the workers does work under the localhost server.
+4. A service worker is run in a worker context: it therefore has no DOM access, and runs on a different thread to the main JavaScript that powers your app.
+5. It is non-blocking. It is designed to be fully async; as a consequence, APIs such as synchronous XHR and Web Storage can't be used inside a service worker.
+6. Service workers make heavy use of promises, as generally they will wait for responses to come through, after which they will respond with a success or failure action.
+
+A service worker is first registered using the `ServiceWorkerContainer.register()` method.
+
+## 100. PWAs
+Progressive Web Apps (PWAs) are applications that you build by using web technologies, and that can be installed and can run on all devices, from one codebase.
+
+PWAs provide native-like experiences to your users on supporting devices.
+
+PWAs uses service workers, manifests, and other web-platform features in combination with progressive enhancement to give users an experience on par with native apps.
+
+#### Benefits of PWAs:
+1. They function just like normal Native Apps.
+2. They're built with common web technologies.
+3. They work offline unlike other sites.
+4. They are discoverable via search engine.
+5. The updates are independent, you don't need to visit the play store for an update.
+6. They are responsive and work with many different screen sizes.
+7. They are easily installable.
+8. Low maintenance cost.
