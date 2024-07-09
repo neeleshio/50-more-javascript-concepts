@@ -719,22 +719,23 @@ arr.indexOf('four') // -1
 ```
 
 ## 81. for in vs for of loops
-`for..of` iterates over all enumerable property **keys** of an object.
+`for..of` allows you to go through the elements of an iterable one at a time. It gives you the actual values directly, without concerning yourself with properties or keys. And doesn't work on Objects but only on Arrays.
 
 ```javascript
 const arr = [5, 6, 7, 8]
 
-for(const key of arr) {
-  console.log(key) // 0, 1, 2, 3
+for(const val of arr) {
+  console.log(val) // 5, 6, 7, 8
 }
 ```
 
-`for..in` can iterates over both **key** & **value** of an iterable object.
+`for...in` is used to examine the properties of an object, including those inherited from its parent object. It provides the property keys, allowing you to access the corresponding values if necessary.
+
 ```javascript
 const arr = [5, 6, 7, 8]
 
-for(const value in arr) {
-  console.log(value) // 5, 6, 7, 8
+for(const key in arr) {
+  console.log(key) // 0, 1, 2, 3
 }
 
 const obj = {
@@ -743,9 +744,9 @@ const obj = {
   city: 'CKM'
 }
 
-for(const value in obj) {
-  console.log(value) // 'name', 'age', 'city'
-  console.log(obj[value]) // 'Neel', 25, 'CKM'
+for(const key in obj) {
+  console.log(key) // 'name', 'age', 'city'
+  console.log(obj[key]) // 'Neel', 25, 'CKM'
 }
 ```
 
